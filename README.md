@@ -124,58 +124,287 @@ npm run dev
 - Email: admin@admin.com
 - Password: admin
 
-## Sample API Requests
+## API Examples
 
-### Login
+### Authentication
+
+#### Login (Admin)
 
 ```
 POST /api/auth/login
 Content-Type: application/json
 
+Request:
 {
   "email": "admin@admin.com",
   "password": "admin"
 }
+
+Response:
+{
+  "success": true,
+  "message": "Login successful.",
+  "data": {
+    "user": {
+      "id": "60d21b4d8a8d6c001c2345678",
+      "name": "Administrator",
+      "email": "admin@admin.com",
+      "role": "admin"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}
 ```
 
-### Add a Student (Admin only)
+### Admin Operations
+
+#### Add a Student
 
 ```
 POST /api/admin/students
 Content-Type: application/json
 Authorization: Bearer <admin_token>
 
+Request:
 {
-  "name": "John Doe",
-  "email": "john.doe@example.com",
-  "department": "Computer Science",
-  "password": "password123"
+  "name": "Shabeeb K",
+  "email": "shabeeb@example.com",
+  "department": "Electronics Engineering",
+  "password": "password456"
+}
+
+Response:
+{
+  "success": true,
+  "message": "Student added successfully.",
+  "data": {
+    "id": "60d21b4d8a8d6c001c2345680",
+    "name": "Shabeeb K",
+    "email": "shabeeb@example.com",
+    "department": "Electronics Engineering",
+    "role": "student"
+  }
 }
 ```
 
-### Assign a Task (Admin only)
+#### Get All Students
+
+```
+GET /api/admin/students
+Authorization: Bearer <admin_token>
+
+Response:
+{
+  "success": true,
+  "count": 2,
+  "data": [
+    {
+      "_id": "60d21b4d8a8d6c001c2345679",
+      "name": "Shabeeb K",
+      "email": "shabeeb@example.com",
+      "role": "student",
+      "department": "Electronics Science",
+      "createdAt": "2023-11-01T10:30:00Z",
+      "updatedAt": "2023-11-01T10:30:00Z"
+    }
+  ]
+}
+```
+
+#### Assign a Task
 
 ```
 POST /api/admin/tasks
 Content-Type: application/json
 Authorization: Bearer <admin_token>
 
+Request:
 {
-  "title": "Complete Assignment",
-  "description": "Complete the JavaScript assignment on loops",
-  "assignedTo": "60d21b4d8a8d6c001c2345678",
-  "dueDate": "2023-12-31T23:59:59Z"
+  "title": "Circuit Diagram",
+  "description": "Create a circuit diagram for series and parallel resistors",
+  "assignedTo": "60d21b4d8a8d6c001c2345679",
+  "dueDate": "2025-4-15T23:59:59Z"
+}
+
+Response:
+{
+  "success": true,
+  "message": "Task assigned successfully.",
+  "data": {
+    "_id": "60d21b4d8a8d6c001c2345681",
+    "title": "Circuit Diagram",
+    "description": "Create a circuit diagram for series and parallel resistors",
+    "assignedTo": "60d21b4d8a8d6c001c2345679",
+    "status": "pending",
+    "dueDate": "2023-12-15T23:59:59Z",
+    "createdBy": "60d21b4d8a8d6c001c2345678",
+    "createdAt": "2023-11-01T10:30:00Z",
+    "updatedAt": "2023-11-01T10:30:00Z"
+  }
 }
 ```
 
-### Student Mark Task as Completed
+#### Get All Tasks
 
 ```
-PATCH /api/student/tasks/60d21b4d8a8d6c001c2345678/status
+GET /api/admin/tasks
+Authorization: Bearer <admin_token>
+
+Response:
+{
+  "success": true,
+  "count": 2,
+  "data": [
+    {
+      "_id": "60d21b4d8a8d6c001c2345681",
+      "title": "Circuit Diagram",
+      "description": "Create a circuit diagram for series and parallel resistors",
+      "assignedTo": {
+        "_id": "60d21b4d8a8d6c001c2345679",
+        "name": "Shabeeb K",
+        "email": "shabeeb@example.com",
+        "department": "Electronics Science"
+      },
+      "status": "pending",
+      "dueDate": "2023-12-15T23:59:59Z",
+      "createdBy": "60d21b4d8a8d6c001c2345678",
+      "createdAt": "2023-11-01T10:30:00Z",
+      "updatedAt": "2023-11-01T10:30:00Z"
+    }
+  ]
+}
+```
+
+#### Get Task by ID
+
+```
+GET /api/admin/tasks/60d21b4d8a8d6c001c2345681
+Authorization: Bearer <admin_token>
+
+Response:
+{
+  "success": true,
+  "data": {
+    "_id": "60d21b4d8a8d6c001c2345681",
+    "title": "Circuit Diagram",
+    "description": "Create a circuit diagram for series and parallel resistors",
+    "assignedTo": {
+      "_id": "60d21b4d8a8d6c001c2345679",
+      "name": "Shabeeb K",
+      "email": "shabeeb@example.com",
+      "department": "Electronics Science"
+    },
+    "status": "pending",
+    "dueDate": "2023-12-15T23:59:59Z",
+    "createdBy": "60d21b4d8a8d6c001c2345678",
+    "createdAt": "2023-11-01T10:30:00Z",
+    "updatedAt": "2023-11-01T10:30:00Z"
+  }
+}
+```
+
+### Student Operations
+
+#### Login (Student)
+
+```
+POST /api/auth/login
+Content-Type: application/json
+
+Request:
+{
+  "email": "shabeeb@example.com",
+  "password": "password456"
+}
+
+Response:
+{
+  "success": true,
+  "message": "Login successful.",
+  "data": {
+    "user": {
+      "id": "60d21b4d8a8d6c001c2345679",
+      "name": "Shabeeb K",
+      "email": "shabeeb@example.com",
+      "role": "student",
+      "department": "Electronics Science"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}
+```
+
+#### Get My Tasks
+
+```
+GET /api/student/tasks
+Authorization: Bearer <student_token>
+
+Response:
+{
+  "success": true,
+  "count": 1,
+  "data": [
+    {
+      "_id": "60d21b4d8a8d6c001c2345681",
+      "title": "Circuit Diagram",
+      "description": "Create a circuit diagram for series and parallel resistors",
+      "status": "pending",
+      "dueDate": "2023-12-15T23:59:59Z",
+      "createdAt": "2023-11-01T10:30:00Z",
+      "updatedAt": "2023-11-01T10:30:00Z"
+    }
+  ]
+}
+```
+
+#### Get Task by ID (Student)
+
+```
+GET /api/student/tasks/60d21b4d8a8d6c001c2345681
+Authorization: Bearer <student_token>
+
+Response:
+{
+  "success": true,
+  "data": {
+    "_id": "60d21b4d8a8d6c001c2345681",
+    "title": "Circuit Diagram",
+    "description": "Create a circuit diagram for series and parallel resistors",
+    "status": "pending",
+    "dueDate": "2023-12-15T23:59:59Z",
+    "createdAt": "2023-11-01T10:30:00Z",
+    "updatedAt": "2023-11-01T10:30:00Z"
+  }
+}
+```
+
+#### Update Task Status
+
+```
+PATCH /api/student/tasks/60d21b4d8a8d6c001c2345681/status
 Content-Type: application/json
 Authorization: Bearer <student_token>
 
+Request:
 {
   "status": "completed"
 }
+
+Response:
+{
+  "success": true,
+  "message": "Task status updated successfully.",
+  "data": {
+    "_id": "60d21b4d8a8d6c001c2345681",
+    "title": "Circuit Diagram",
+    "description": "Create a circuit diagram for series and parallel resistors",
+    "status": "completed",
+    "dueDate": "2023-12-15T23:59:59Z",
+    "createdAt": "2023-11-01T10:30:00Z",
+    "updatedAt": "2023-11-05T14:20:00Z"
+  }
+}
 ```
+
+
