@@ -47,6 +47,11 @@ A RESTful API for a student management system built with Express, TypeScript, an
 - Admin panel for managing students and tasks
 - Student interface for viewing and updating assigned tasks
 
+## Live API
+
+The API is hosted at:
+https://assessment-df3e.onrender.com
+
 ## Prerequisites
 
 - Node.js (v14 or later)
@@ -90,6 +95,11 @@ For development:
 ```bash
 npm run dev
 ```
+
+## API Documentation
+
+API documentation is available at:
+https://documenter.getpostman.com/view/20220623/2sAYkErLJP
 
 ## API Endpoints
 
